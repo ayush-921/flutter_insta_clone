@@ -39,11 +39,11 @@ class _LoginScreenState extends State<LoginScreen> {
               SvgPicture.asset(
                 'assets/ic_instagram.svg',
                 color: primaryColor,
-                height: 64,
+                height: 50,
               ),
 
               const SizedBox(
-                height: 64,
+                height: 32,
               ),
 
               //email text field
@@ -63,6 +63,61 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: "Password",
                 textInputType: TextInputType.text,
                 isPass: true,
+              ),
+
+              const SizedBox(
+                height: 24,
+              ),
+              //LoginButton
+
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: const BoxDecoration(
+                    color: blueColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(4),
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Log In',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+
+              Flexible(
+                flex: 2,
+                child: Container(),
+              ),
+
+              const Divider(
+                color: Colors.grey,
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: const Text('Don\'t have an account?  '),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: const Text(
+                        'Sign up.',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ],
           ),
