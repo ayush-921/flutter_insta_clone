@@ -4,6 +4,7 @@ import 'package:flutter_insta_clone/responsive/mobile_screen_layout.dart';
 import 'package:flutter_insta_clone/responsive/responsive_screen_layout.dart';
 import 'package:flutter_insta_clone/responsive/web_screen_layout.dart';
 import 'package:flutter_insta_clone/screens/login_screen.dart';
+import 'package:flutter_insta_clone/screens/signup_screen.dart';
 import './utils/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
       // home: const ResponsiveLayout(
       //     webScreenLayout: WebScreenLayout(),
       //     mobileScreenLayout: MobileScreenLayout()),
-      home: LoginScreen(),
+      home: //LoginScreen(),
+          SignUpScreen(),
     );
   }
 }
