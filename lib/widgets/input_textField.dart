@@ -21,7 +21,7 @@ class InputTextField extends StatelessWidget {
       controller: textEditingController,
       decoration: InputDecoration(
         hintText: hintText,
-        border: inputBorder,
+        border: InputBorder.none,
         focusedBorder: inputBorder,
         filled: true,
         contentPadding: const EdgeInsets.all(8),
