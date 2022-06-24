@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_insta_clone/resources/auth_methods.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '/utils/colors.dart';
 import 'package:flutter_insta_clone/widgets/input_textField.dart';
@@ -119,7 +120,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               //SignUpButton
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  String res = await AuthMethods().signUpuser(
+                    email: _emailController.text,
+                    uname: _unameController.text,
+                    password: _passController.text,
+                    bio: _bioController.text,
+                  );
+                  print(res);
+                },
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 12),
