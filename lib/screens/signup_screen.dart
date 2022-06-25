@@ -1,6 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_insta_clone/resources/auth_methods.dart';
+import 'package:flutter_insta_clone/utils/utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import '/utils/colors.dart';
 import 'package:flutter_insta_clone/widgets/input_textField.dart';
 
@@ -16,6 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _unameController = TextEditingController();
+  Uint8List? _image;
 
   @override
   void dispose() {
@@ -24,6 +29,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _passController.dispose();
     _bioController.dispose();
     _unameController.dispose();
+  }
+
+  selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
   }
 
   @override
@@ -53,16 +65,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               Stack(
                 children: [
-                  const CircleAvatar(
-                    radius: 54,
-                    backgroundImage: NetworkImage(
-                        'https://png.pngtree.com/png-vector/20190429/ourlarge/pngtree-vector-business-men-icon-png-image_998295.jpg'),
-                  ),
+                  _image != null
+                      ? CircleAvatar(
+                          radius: 54,
+                          backgroundImage: MemoryImage(_image!),
+                        )
+                      : const CircleAvatar(
+                          radius: 54,
+                          backgroundImage: NetworkImage(
+                              'https://png.pngtree.com/png-vector/20190429/ourlarge/pngtree-vector-business-men-icon-png-image_998295.jpg'),
+                        ),
                   Positioned(
                     bottom: -15,
                     left: 70,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: selectImage,
                       icon: const Icon(Icons.add_a_photo),
                     ),
                   )
@@ -126,6 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     uname: _unameController.text,
                     password: _passController.text,
                     bio: _bioController.text,
+                    file: _image!,
                   );
                   print(res);
                 },
