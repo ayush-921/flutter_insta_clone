@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_insta_clone/resources/auth_methods.dart';
+//import 'package:flutter_insta_clone/resources/storage_methods.dart';
 import 'package:flutter_insta_clone/utils/utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,7 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _unameController = TextEditingController();
   Uint8List? _image;
-
+  bool _isLoading = false;
   @override
   void dispose() {
     super.dispose();
@@ -38,9 +39,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().signUpuser(
+      email: _emailController.text,
+      uname: _unameController.text,
+      password: _passController.text,
+      bio: _bioController.text,
+      file: _image!,
+    );
+    setState(() {
+      _isLoading = false;
+    });
+    if (res != 'success') {
+      showSnackBar(res, context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -137,16 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               //SignUpButton
               InkWell(
-                onTap: () async {
-                  String res = await AuthMethods().signUpuser(
-                    email: _emailController.text,
-                    uname: _unameController.text,
-                    password: _passController.text,
-                    bio: _bioController.text,
-                    file: _image!,
-                  );
-                  print(res);
-                },
+                onTap: signUpUser,
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -157,12 +169,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   alignment: Alignment.center,
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      : const Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ),
 
