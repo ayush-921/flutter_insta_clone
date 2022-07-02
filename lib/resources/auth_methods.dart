@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_insta_clone/resources/storage_methods.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -21,12 +22,14 @@ class AuthMethods {
       if (email.isNotEmpty ||
           uname.isNotEmpty ||
           password.isNotEmpty ||
-          bio.isNotEmpty ||
-          file != null) {
+          bio.isNotEmpty) {
         //register user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
+        // check utils.dart upload profile pic in firebase storage and return the url address of photo
+        String photoUrl = await StorageMethods()
+            .uploadImageToStorage('profilePic', file, false);
         //add user to database
         await _firestore.collection('user').doc(cred.user!.uid).set({
           'uid': cred.user!.uid,
@@ -35,6 +38,7 @@ class AuthMethods {
           'following': [],
           'bio': bio,
           'username': uname,
+          'photoUrl': photoUrl,
         });
 
         res = "success";
