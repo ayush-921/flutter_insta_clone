@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_insta_clone/resources/auth_methods.dart';
+import 'package:flutter_insta_clone/screens/login_screen.dart';
 //import 'package:flutter_insta_clone/resources/storage_methods.dart';
 import 'package:flutter_insta_clone/utils/utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -56,6 +57,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (res != 'success') {
       showSnackBar(res, context);
     }
+  }
+
+  void navigateToLogInScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
   }
 
   @override
@@ -201,7 +210,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: const Text('Already have an account?  '),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: navigateToLogInScreen,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: const Text(

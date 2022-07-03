@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_insta_clone/resources/auth_methods.dart';
+import 'package:flutter_insta_clone/screens/signup_screen.dart';
 import 'package:flutter_insta_clone/utils/utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '/utils/colors.dart';
@@ -37,6 +38,14 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void navigateToSignUpScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const SignUpScreen(),
+      ),
+    );
   }
 
   @override
@@ -132,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text('Don\'t have an account?  '),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: navigateToSignUpScreen,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: const Text(
