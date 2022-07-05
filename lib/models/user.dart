@@ -3,7 +3,7 @@ class User {
   final String email;
   final String bio;
   final String photoUrl;
-  final String uname;
+  final String username;
   final List followers;
   final List following;
   User({
@@ -13,7 +13,7 @@ class User {
     required this.following,
     required this.photoUrl,
     required this.uid,
-    required this.uname,
+    required this.username,
   });
 
   Map<String, dynamic> toJson() => {
@@ -22,7 +22,7 @@ class User {
         'followers': followers,
         'following': following,
         'bio': bio,
-        'username': uname,
+        'username': username,
         'photoUrl': photoUrl,
       };
 }
