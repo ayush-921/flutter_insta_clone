@@ -3,6 +3,9 @@ import 'package:flutter_insta_clone/resources/auth_methods.dart';
 import 'package:flutter_insta_clone/screens/signup_screen.dart';
 import 'package:flutter_insta_clone/utils/utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_screen_layout.dart';
+import '../responsive/web_screen_layout.dart';
 import '/utils/colors.dart';
 import 'package:flutter_insta_clone/widgets/input_textField.dart';
 
@@ -31,8 +34,20 @@ class _LoginScreenState extends State<LoginScreen> {
     String res = await AuthMethods().loginUser(
         email: _emailController.text, password: _passController.text);
 
-    if (res != 'success') {
-      print(res);
+    if (res == 'success') {
+      await Future.delayed(const Duration(seconds: 1));
+      if (!mounted) return;
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout(),
+          ),
+        ),
+      );
+    } else {
+      await Future.delayed(const Duration(seconds: 1));
+      if (!mounted) return;
       showSnackBar(res, context);
     }
     setState(() {

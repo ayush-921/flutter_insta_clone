@@ -7,6 +7,9 @@ import 'package:flutter_insta_clone/screens/login_screen.dart';
 import 'package:flutter_insta_clone/utils/utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_screen_layout.dart';
+import '../responsive/web_screen_layout.dart';
 import '/utils/colors.dart';
 import 'package:flutter_insta_clone/widgets/input_textField.dart';
 
@@ -55,7 +58,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = false;
     });
     if (res != 'success') {
+      await Future.delayed(const Duration(seconds: 1));
+      if (!mounted) return;
       showSnackBar(res, context);
+    } else {
+      await Future.delayed(const Duration(seconds: 1));
+      if (!mounted) return;
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout(),
+          ),
+        ),
+      );
     }
   }
 
