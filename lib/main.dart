@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_insta_clone/api.dart';
 import 'package:flutter_insta_clone/responsive/mobile_screen_layout.dart';
 import 'package:flutter_insta_clone/responsive/responsive_screen_layout.dart';
 import 'package:flutter_insta_clone/responsive/web_screen_layout.dart';
@@ -11,9 +12,11 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
+    APIKey Key = APIKey();
+    String x = Key.returnKey();
     await Firebase.initializeApp(
-      options: const FirebaseOptions(
-          apiKey: "AIzaSyAZEFF9_LrrqwnV0Bj5nxgdqUhMmc2zCg8",
+      options: FirebaseOptions(
+          apiKey: x,
           appId: "1:165784649696:web:67f0847e21e58b37017585",
           messagingSenderId: "165784649696",
           projectId: "flutter-insta-clone-5c983"),
