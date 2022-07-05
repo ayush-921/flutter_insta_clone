@@ -58,7 +58,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = false;
     });
     if (res != 'success') {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(
+          seconds:
+              1)); //this is part is added to avoid crash due to buildcontext used in async gaps
       if (!mounted) return;
       showSnackBar(res, context);
     } else {
