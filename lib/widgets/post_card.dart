@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_insta_clone/utils/colors.dart';
+import 'package:intl/intl.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({Key? key}) : super(key: key);
+  final snap;
+  const PostCard({
+    Key? key,
+    required this.snap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +31,8 @@ class PostCard extends StatelessWidget {
               children: <Widget>[
                 CircleAvatar(
                   radius: 16,
-                  backgroundImage: const NetworkImage(
-                    'https://images.unsplash.com/photo-1657673261479-96f76a53d7d7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=600&q=60',
+                  backgroundImage: NetworkImage(
+                    snap['profImage'],
                   ),
                 ),
                 Expanded(
@@ -38,7 +43,7 @@ class PostCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Username',
+                          snap['username'],
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -86,7 +91,7 @@ class PostCard extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
             child: Image.network(
-              'https://images.unsplash.com/photo-1649859398021-afbfe80e83b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=600&q=60',
+              snap['postUrl'],
               fit: BoxFit.cover,
             ),
           ),
@@ -123,6 +128,74 @@ class PostCard extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+
+          //description comments and likes
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DefaultTextStyle(
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                  child: Text(
+                    '${snap['likes'].length} likes',
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(
+                    top: 8,
+                  ),
+                  child: RichText(
+                    text: TextSpan(
+                        style: const TextStyle(
+                          color: primaryColor,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: snap['username'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '\t${snap['description']}',
+                          )
+                        ]),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 4),
+                    child: Text(
+                      'View all 200 Comments',
+                      style: TextStyle(
+                        color: secondaryColor,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 4),
+                  child: Text(
+                    DateFormat.yMMMd().format(snap['datePublished'].toDate()),
+                    style: TextStyle(
+                      color: secondaryColor,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       ),
