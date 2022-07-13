@@ -4,6 +4,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_insta_clone/models/user.dart';
 import 'package:flutter_insta_clone/provider/user_provider.dart';
+import 'package:flutter_insta_clone/screens/comment_screen.dart';
 import 'package:flutter_insta_clone/utils/colors.dart';
 import 'package:flutter_insta_clone/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
@@ -171,7 +172,11 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CommentsScreen(),
+                  ),
+                ),
                 icon: Icon(
                   Icons.comment_outlined,
                 ),
