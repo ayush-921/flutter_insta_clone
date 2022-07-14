@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_insta_clone/screens/feeds_screen.dart';
+import 'package:flutter_insta_clone/screens/profile_screen.dart';
 import 'package:flutter_insta_clone/screens/search_screen.dart';
 
 import '../screens/add_post_screen.dart';
@@ -11,5 +13,5 @@ List<Widget> homeScreenItem = [
   const SearchScreen(),
   const AddPostScreen(),
   Text('Fav'),
-  Text('user'),
+  ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid),
 ];
