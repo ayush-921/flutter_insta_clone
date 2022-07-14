@@ -58,4 +58,44 @@ class FirestoreMethods {
       print(e.toString());
     }
   }
+
+  Future<void> postComments(String postId, String text, String uid,
+      String username, String profilePic) async {
+    //TODO: add fuctionality to open profile screen when username is Clicked
+    try {
+      if (text.isNotEmpty) {
+        String commentId = const Uuid().v1();
+        await _firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .set({
+          //TODO: Create model for comments
+          'profilePic': profilePic,
+          'username': username,
+          'uid': uid,
+          'text': text,
+          'commentId': commentId,
+          'datePublished': DateTime.now(),
+        });
+      } else {
+        //TODO: use res method with return type string
+        print('text is empty');
+      }
+    } catch (e) {
+      //TODO: use res method with return type string
+      print(e.toString());
+    }
+  }
+
+  //delete posts
+  Future<void> deletePost(String postId) async {
+    try {
+      await _firestore.collection('posts').doc(postId).delete();
+    } catch (e) {
+      //TODO: use res method with return type string
+      print(e.toString());
+    }
+  }
 }
