@@ -7,17 +7,15 @@ import 'package:flutter_insta_clone/responsive/mobile_screen_layout.dart';
 import 'package:flutter_insta_clone/responsive/responsive_screen_layout.dart';
 import 'package:flutter_insta_clone/responsive/web_screen_layout.dart';
 import 'package:flutter_insta_clone/screens/login_screen.dart';
-import 'package:flutter_insta_clone/screens/signup_screen.dart';
 import 'package:provider/provider.dart';
 import './utils/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
-    APIKey Key = APIKey();
-    String x = Key.returnKey();
+    APIKey key = APIKey();
+    String x = key.returnKey();
     await Firebase.initializeApp(
       options: FirebaseOptions(
         apiKey: x,
