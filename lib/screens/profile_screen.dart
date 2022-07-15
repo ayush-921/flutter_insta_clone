@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_insta_clone/resources/auth_methods.dart';
+import 'package:flutter_insta_clone/resources/firestore_methods.dart';
 import 'package:flutter_insta_clone/screens/login_screen.dart';
 import 'package:flutter_insta_clone/utils/colors.dart';
 import 'package:flutter_insta_clone/utils/utils.dart';
-
-import '../resources/auth_methods.dart';
-import '../resources/firestore_methods.dart';
-import '../widgets/follow_button.dart';
+import 'package:flutter_insta_clone/widgets/follow_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
@@ -18,7 +17,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  var userData;
+  var userData = {};
   int postLen = 0;
   int followers = 0;
   int following = 0;
@@ -40,14 +39,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .collection('user')
           .doc(widget.uid)
           .get();
-      userData = userSnap.data()!;
 
-      //get post len
+      // get post lENGTH
       var postSnap = await FirebaseFirestore.instance
           .collection('posts')
-          .where('uid', isEqualTo: widget.uid)
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
           .get();
+
       postLen = postSnap.docs.length;
+      userData = userSnap.data()!;
       followers = userSnap.data()!['followers'].length;
       following = userSnap.data()!['following'].length;
       isFollowing = userSnap
@@ -55,11 +55,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .contains(FirebaseAuth.instance.currentUser!.uid);
       setState(() {});
     } catch (e) {
-      //print(userData['username']);
-      showSnackBar(e.toString(), context);
-      setState(() {
-        isLoading = false;
-      });
+      showSnackBar(
+        e.toString(),
+        context,
+      );
     }
     setState(() {
       isLoading = false;
@@ -105,8 +104,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     buildStatColumn(postLen, "posts"),
-                                    buildStatColumn(followers, "Followers"),
-                                    buildStatColumn(following, "Following"),
+                                    buildStatColumn(followers, "followers"),
+                                    buildStatColumn(following, "following"),
                                   ],
                                 ),
                                 Row(
@@ -143,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       .followUser(
                                                     FirebaseAuth.instance
                                                         .currentUser!.uid,
-                                                    userData['uid'],
+                                                    widget.uid,
                                                   );
 
                                                   setState(() {
@@ -162,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       .followUser(
                                                     FirebaseAuth.instance
                                                         .currentUser!.uid,
-                                                    userData['uid'],
+                                                    widget.uid,
                                                   );
 
                                                   setState(() {
@@ -170,7 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     followers++;
                                                   });
                                                 },
-                                              ),
+                                              )
                                   ],
                                 ),
                               ],
@@ -180,7 +179,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.only(top: 15),
+                        padding: const EdgeInsets.only(
+                          top: 15,
+                        ),
                         child: Text(
                           userData['username'],
                           style: const TextStyle(
@@ -190,7 +191,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.only(top: 5),
+                        padding: const EdgeInsets.only(
+                          top: 1,
+                        ),
                         child: Text(
                           userData['bio'],
                         ),
@@ -204,37 +207,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       .collection('posts')
                       .where('uid', isEqualTo: widget.uid)
                       .get(),
-                  builder: (context,
-                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                          snapshot) {
+                  builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
+
                     return GridView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.docs.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 5,
-                          mainAxisSpacing: 1.5,
-                          childAspectRatio: 1,
-                        ),
-                        itemBuilder: (context, index) {
-                          DocumentSnapshot snap = snapshot.data!.docs[index];
-                          return Container(
-                            child: Image(
-                              image: NetworkImage(
-                                snap['postUrl'],
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        });
+                      shrinkWrap: true,
+                      itemCount: (snapshot.data! as dynamic).docs.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 1.5,
+                        childAspectRatio: 1,
+                      ),
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot snap =
+                            (snapshot.data! as dynamic).docs[index];
+
+                        return Container(
+                          child: Image(
+                            image: NetworkImage(snap['postUrl']),
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    );
                   },
-                ),
+                )
               ],
             ),
           );
@@ -257,7 +260,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Text(
             label,
             style: const TextStyle(
-                fontSize: 15, fontWeight: FontWeight.w400, color: Colors.grey),
+              fontSize: 15,
+              fontWeight: FontWeight.w400,
+              color: Colors.grey,
+            ),
           ),
         ),
       ],
