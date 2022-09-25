@@ -4,27 +4,35 @@ import 'package:flutter_insta_clone/utils/colors.dart';
 import 'package:flutter_insta_clone/widgets/post_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../utils/global_variable.dart';
+
 class FeedScreen extends StatelessWidget {
   const FeedScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        backgroundColor: mobileBackgroundColor,
-        title: SvgPicture.asset(
-          'assets/ic_instagram.svg',
-          color: primaryColor,
-          height: 32,
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.messenger_outline),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      backgroundColor:
+          width > webScreenSize ? webBackgroundColor : mobileBackgroundColor,
+      appBar: width > webScreenSize
+          ? null
+          : AppBar(
+              centerTitle: false,
+              backgroundColor: mobileBackgroundColor,
+              title: SvgPicture.asset(
+                'assets/ic_instagram.svg',
+                color: primaryColor,
+                height: 32,
+              ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.messenger_outline),
+                  onPressed: () {},
+                ),
+              ],
+            ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),
         builder: (context,
@@ -37,8 +45,14 @@ class FeedScreen extends StatelessWidget {
 
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
-            itemBuilder: ((context, index) => PostCard(
-                  snap: snapshot.data!.docs[index],
+            itemBuilder: ((context, index) => Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: width > webScreenSize ? width * 0.3 : 0,
+                    vertical: width > webScreenSize ? 15 : 0,
+                  ),
+                  child: PostCard(
+                    snap: snapshot.data!.docs[index],
+                  ),
                 )),
           );
         },
